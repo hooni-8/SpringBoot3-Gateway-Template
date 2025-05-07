@@ -1,0 +1,79 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.4'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'org.template'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('springCloudVersion', "2024.0.1")
+}
+
+dependencies {
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
+
+    //spring cloud
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+
+    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5'
+
+    //oauth2
+    implementation 'org.springframework.security:spring-security-oauth2-core'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+
+    // web
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    //database
+    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'org.postgresql:r2dbc-postgresql'
+
+    //redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.session:spring-session-data-redis'
+
+    //apache
+    implementation 'org.apache.commons:commons-lang3:3.14.0'
+    implementation 'org.apache.commons:commons-collections4:4.4'
+
+    implementation 'io.jsonwebtoken:jjwt:0.12.6'
+
+    // Jackson (JWT Payload 직렬화/역직렬화)
+//    implementation 'com.fasterxml.jackson.core:jackson-databind'
+//    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+
+    //swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.5.0'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
